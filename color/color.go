@@ -1,7 +1,5 @@
 package color
 
-import "fmt"
-
 type TypeColor string
 
 const (
