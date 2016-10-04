@@ -6,9 +6,11 @@ import (
 )
 
 func Info(format string, a ...interface{}) {
-	log.Printf("%s"+format, color.Color(color.Blue, "INFO: "), a...)
+	format = color.Color(color.Blue, "INFO: ")+format
+	log.Printf(format, a...)
 }
 
 func Fatal(format string, a ...interface{}) {
-	log.Fatalf("%s "+format, color.Color(color.Red, "FATAL:"), a...)
+	format = color.Color(color.Red, "FATAL: ")+format
+	log.Fatalf(format, a...)
 }
