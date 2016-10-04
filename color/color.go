@@ -26,19 +26,19 @@ const (
 
 var def TypeColor = Default
 
-func Color(c string, s string) string {
+func Color(c TypeColor, s string) string {
 	return c + s + DefColor()
 }
 
-func ColorN(c string, s string) string {
+func ColorN(c TypeColor, s string) string {
 	return Color(c, s) + "\n"
 }
 
-func SetDefColor(c string) {
+func SetDefColor(c TypeColor) {
 	fmt.Printf(c)
 	def = c
 }
 
-func DefColor() string {
+func DefColor() TypeColor {
 	return def
 }
