@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"github.com/qa-dev/go-core/log"
 	"net/http"
 	"runtime/debug"
-	"github.com/qa-dev/go-core/log"
 )
 
 func New(h http.Handler) http.Handler {

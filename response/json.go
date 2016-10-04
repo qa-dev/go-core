@@ -1,8 +1,8 @@
 package response
 
 import (
-	"net/http"
 	"encoding/json"
+	"net/http"
 )
 
 // Ответ обернутый в json

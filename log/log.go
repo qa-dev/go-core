@@ -1,16 +1,14 @@
 package log
 
 import (
-	"github.com/fatih/color"
+	"github.com/qa-dev/go-core/color"
 	"log"
 )
 
 func Info(format string, a ...interface{}) {
-	color.Blue("INFO: ")
-	log.Printf(format, a ...)
+	log.Printf("%s"+format, color.Color("INFO: ", color.Blue), a...)
 }
 
 func Fatal(format string, a ...interface{}) {
-	color.Red("FATAL: ")
-	log.Fatalf(format, a ...)
+	log.Fatalf("%s "+format, color.Color("FATAL:", color.Red), a...)
 }
