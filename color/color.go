@@ -27,7 +27,7 @@ const (
 var def TypeColor = Default
 
 func Color(c TypeColor, s string) string {
-	return c + s + DefColor()
+	return string(c) + s + DefColor()
 }
 
 func ColorN(c TypeColor, s string) string {
@@ -35,7 +35,6 @@ func ColorN(c TypeColor, s string) string {
 }
 
 func SetDefColor(c TypeColor) {
-	fmt.Printf(c)
 	def = c
 }
 
