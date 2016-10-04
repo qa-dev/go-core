@@ -24,7 +24,7 @@ const (
 	LightWhite   TypeColor = "\x1b[97m"
 )
 
-var def string = Default
+var def TypeColor = Default
 
 func Color(c string, s string) string {
 	return c + s + DefColor()
