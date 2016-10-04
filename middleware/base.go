@@ -18,6 +18,6 @@ func New(h http.Handler) http.Handler {
 
 		h.ServeHTTP(lrw, req)
 		log.Info("%v %v %v (%v)",
-			lrw.Status, req.Method, req.URL.Path, req.RemoteAddr)
+			lrw.Status(), req.Method, req.URL.Path, req.RemoteAddr)
 	})
 }

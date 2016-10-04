@@ -1,5 +1,7 @@
 package color
 
+import "fmt"
+
 type TypeColor string
 
 const (
@@ -25,7 +27,7 @@ const (
 var def TypeColor = Default
 
 func Color(c TypeColor, s string) string {
-	return string(c) + s + DefColor()
+	return fmt.Sprintf("%s%s%s", c, s, DefColor())
 }
 
 func ColorN(c TypeColor, s string) string {
