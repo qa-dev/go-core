@@ -1,7 +1,10 @@
 package config
 
 import (
+	"io/ioutil"
 	"testing"
+	"os"
+	"log"
 )
 
 type TestConfig struct {
@@ -11,7 +14,16 @@ type TestConfig struct {
 
 func TestSuccess(t *testing.T) {
 	var config *TestConfig
-	err := LoadFromFile("./valid.json", &config)
+
+	tempFile := makeJsonFile("" +
+		"{" +
+			"\"property1\": \"value1\", " +
+			"\"property2\": \"value2\"" +
+		"}" +
+	"");
+	defer os.Remove(tempFile.Name()) // clean up
+
+	err := LoadFromFile(tempFile.Name(), &config)
 
 	if err != nil {
 		t.Error("Expected no errors, got ", err)
@@ -28,7 +40,16 @@ func TestSuccess(t *testing.T) {
 
 func TestFailInvalidJson(t *testing.T) {
 	var config *TestConfig
-	err := LoadFromFile("./invalid.json", &config)
+
+	tempFile := makeJsonFile("" +
+		"{" +
+			"\"property1\"w: \"value1\", " +
+			"\"property2\": \"value2\"" +
+		"}" +
+	"");
+	defer os.Remove(tempFile.Name()) // clean up
+
+	err := LoadFromFile(tempFile.Name(), &config)
 
 	if err == nil {
 		t.Error("Expected 'invalid character 'w' after object key', got ", "not errors")
@@ -42,4 +63,21 @@ func TestFailEmptyFilePath(t *testing.T) {
 	if err == nil {
 		t.Error("Expected 'empty configuration file path', got ", "not errors")
 	}
+}
+
+func makeJsonFile(jsonString string) (*os.File) {
+	content := []byte(jsonString)
+	tempFile, err := ioutil.TempFile("", "json")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	if _, err := tempFile.Write(content); err != nil {
+		log.Fatal(err)
+	}
+	if err := tempFile.Close(); err != nil {
+		log.Fatal(err)
+	}
+
+	return tempFile
 }
