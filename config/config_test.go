@@ -5,6 +5,7 @@ import (
 	"testing"
 	"os"
 	"log"
+	"github.com/stretchr/testify/assert"
 )
 
 type TestConfig struct {
@@ -15,54 +16,43 @@ type TestConfig struct {
 func TestSuccess(t *testing.T) {
 	var config *TestConfig
 
-	tempFile := makeJsonFile("" +
-		"{" +
-			"\"property1\": \"value1\", " +
-			"\"property2\": \"value2\"" +
-		"}" +
-	"");
+	tempFile := makeJsonFile(`
+		{
+			"property1": "value1",
+			"property2": "value2"
+		}
+	`);
 	defer os.Remove(tempFile.Name()) // clean up
 
 	err := LoadFromFile(tempFile.Name(), &config)
 
-	if err != nil {
-		t.Error("Expected no errors, got ", err)
-	}
-
-	if config.Property1 != "value1" {
-		t.Error("Expected value1, got ", config.Property1)
-	}
-
-	if config.Property2 != "value2" {
-		t.Error("Expected value2, got ", config.Property2)
-	}
+	assert.Nil(t, err)
+	assert.Equal(t, "value1", config.Property1)
+	assert.Equal(t, "value2", config.Property2)
 }
 
 func TestFailInvalidJson(t *testing.T) {
 	var config *TestConfig
 
-	tempFile := makeJsonFile("" +
-		"{" +
-			"\"property1\"w: \"value1\", " +
-			"\"property2\": \"value2\"" +
-		"}" +
-	"");
+	tempFile := makeJsonFile(`
+		{
+			"property1"w: "value1",
+			"property2": "value2"
+		}
+	`);
 	defer os.Remove(tempFile.Name()) // clean up
 
 	err := LoadFromFile(tempFile.Name(), &config)
 
-	if err == nil {
-		t.Error("Expected 'invalid character 'w' after object key', got ", "not errors")
-	}
+	assert.Equal(t, "invalid character 'w' after object key", err.Error())
+
 }
 
 func TestFailEmptyFilePath(t *testing.T) {
 	var config *TestConfig
 	err := LoadFromFile("", &config)
 
-	if err == nil {
-		t.Error("Expected 'empty configuration file path', got ", "not errors")
-	}
+	assert.Equal(t, "empty configuration file path", err.Error())
 }
 
 func makeJsonFile(jsonString string) (*os.File) {
